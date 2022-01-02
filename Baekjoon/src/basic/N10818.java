@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * 
  * @author bnj
- *
+ * 백준 10818번
+ * N개의 정수가 주어질 때, 최솟값과 최댓값을 구하는 프로그램
+ * 
  */
 public class N10818 {
 	public static void main(String[] args) throws NumberFormatException, IOException {
