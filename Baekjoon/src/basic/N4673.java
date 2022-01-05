@@ -22,7 +22,7 @@ public class N4673 {
 		boolean[] selfCheck = new boolean[10001];
 		Arrays.fill(selfCheck, true);
 		
-		for (int i = 1; i <= selfCheck.length; i++) {
+		for (int i=1; i<=selfCheck.length; i++) {
 			int num = sum(i);
 			
 			if (num > 10000) continue;
@@ -30,7 +30,7 @@ public class N4673 {
 			selfCheck[num] = false;	//생성자가 있는 숫자 체크
 		}
 		
-		for (int i = 1; i < selfCheck.length; i++) {
+		for (int i=1; i<selfCheck.length; i++) {
 			if (selfCheck[i]) {
 				System.out.println(i);
 			}
