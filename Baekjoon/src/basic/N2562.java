@@ -17,7 +17,7 @@ public class N2562 {
 		int pointer = 0;
 		int[] num = new int[9];
 		
-		for (int i=0; i < 9; i++) {
+		for (int i=0; i<9; i++) {
 			num[i] = scan.nextInt();
 			
 			if (num[i] > max) {
