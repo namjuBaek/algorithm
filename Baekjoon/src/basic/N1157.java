@@ -23,7 +23,7 @@ public class N1157 {
 		String checkStr = "";
 		
 		String str = scan.next();
-		str = str.toLowerCase();
+		str = str.toUpperCase();
 		
 		for (int i=0; i<str.length(); i++) {
 			String chr = str.substring(i, i+1);
@@ -44,6 +44,7 @@ public class N1157 {
 		System.out.println(maxChr);
 	}
 
+	//문자열 str안에 chr 문자의 포함 개수를 구하는 메소드
 	static int countChar(String str, String chr) {
 		return str.length() - str.replace(chr, "").length();
 	}
