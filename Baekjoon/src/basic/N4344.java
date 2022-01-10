@@ -3,7 +3,7 @@ package basic;
 import java.util.Scanner;
 
 /**
- * 2021.01.04 화
+ * 2022.01.04 화
  * @author bnj
  * 백준 4344번
  * 첫째 줄에는 테스트 케이스의 개수 C가 주어진다.

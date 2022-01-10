@@ -3,7 +3,7 @@ package basic;
 import java.util.Scanner;
 
 /**
- * 2021.01.04 화
+ * 2022.01.04 화
  * @author bnj
  * 백준 8958번
  * OX퀴즈
