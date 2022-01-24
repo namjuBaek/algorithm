@@ -1,9 +1,9 @@
 package sorting;
 
 /**
- * 2022.01.15 토
+ * 2022.01.24 월
  * @author bnj
- * 백준 N2750번 수 정렬하기
+ * 백준 N2750번 수 정렬하기 _ 삽입정렬 버전
  * 
  * N개의 수가 주어졌을 때, 이를 오름차순으로 정렬하는 프로그램을 작성하시오.
  * 
@@ -15,7 +15,7 @@ package sorting;
 
 import java.util.Scanner;
 
-public class N2750 {
+public class N2750_1 {
 
 	public static void main(String[] args) {
 		
@@ -28,24 +28,19 @@ public class N2750 {
 			sort[i] = scan.nextInt();
 		}
 		
-		//선택 정렬
+		//삽입 정렬
 		int temp = 0, minIndex = 0;
-		for (int i=0; i<count-1; i++) {
-			minIndex = i;
-			for (int j=i+1; j<count; j++) {
-				if (sort[j] < sort[minIndex]) {
-					minIndex = j;
+		for (int i=1; i<sort.length; i++) {
+			for (int j=i; j>0; j--) {
+				if (sort[j] < sort[j-1]) {
+					temp = sort[j];
+					sort[j] = sort[j-1];
+					sort[j-1] = temp;
+				} else {
+					break;
 				}
 			}
-			
-			temp = sort[minIndex];
-			sort[minIndex] = sort[i];
-			sort[i] = temp;
 		}
-		//메서드 이용방법 - 처리 시간은 비슷함
-		//import java.util.Arrays
-		//Arrays.sort(sort); - 오름차순
-		//Arrays.sort(sort, Collections.reverseOrder()); - 내림차순
 		
 		for (int num : sort) {
 			System.out.println(num);
