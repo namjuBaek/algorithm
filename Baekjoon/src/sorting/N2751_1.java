@@ -1,9 +1,9 @@
 package sorting;
 
 /**
- * 2022.02.05 토
+ * 2022.02.06 일
  * @author bnj
- * 백준 N2751번 수 정렬하기_병합정렬 사용
+ * 백준 N2751번 수 정렬하기_퀵 정렬 사용
  * 
  * N개의 수가 주어졌을 때, 이를 오름차순으로 정렬하는 프로그램을 작성하시오.
  * 
@@ -13,14 +13,9 @@ package sorting;
  * 시간복잡도가 O(nlogn) - 병합정렬, 힙 정렬 or 내장 정렬 함수 사용
  * 
  * ----comment----
- * 시행착오 1
- * 병합정렬을 사용한 문제풀이를 제출했는데 시간 초과가 떴다.
- * 백준 커뮤니티에 동일한 문제를 겪은 사람이 질문한 글이 있어 읽어보니
- * 출력을 System.out.println()으로 해서 생긴 문제였다.
- * BufferedWriter를 사용해서 제출하니 성공적으로 통과되었다.
- * BufferedReader와 BufferedWriter에 관해서도 언제 한 번 살펴봐야겠다.
+ * 퀵 정렬은 최악의 경우 시간복잡도가 O(n^2)이 될 수 있기 때문에 백준 2751번 문제에 제출했을 때 통과되지 않음.
+ *  
  * 
- * ※ 중요한 점!
  * Scanner로 입력받아 sort를 사용할 경우, 출력은 BufferedWriter를 쓰던가, StringBuilder를 써서 한번에 출력해줘야 한다.
  * (아니면 시간초과 발생)
  */
@@ -30,7 +25,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-public class N2751 {
+public class N2751_1 {
 
 	static int[] sort;
 	static int[] tmp;
@@ -41,14 +36,13 @@ public class N2751 {
 		
 		int count = scan.nextInt();
 		sort = new int[count];
-		tmp = new int[count];	//정렬용 배열
 		
 		for (int i = 0; i < count; i++) {
 			sort[i] = scan.nextInt();
 		}
 		
-		//병합 정렬
-		mergeSort(sort, 0, count - 1);
+		//퀵 정렬
+		quickSort(sort, 0, count - 1);
 		
 		//정렬된 배열 출력
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));   //할당된 버퍼에 값 넣어주기
@@ -58,50 +52,38 @@ public class N2751 {
 		bw.flush();   //남아있는 데이터를 모두 출력시킴
 		bw.close();   //스트림을 닫음
 	}
-	
-	//배열 정렬하며 병합
-	public static void merge(int[] arr, int start, int end, int mid) {
-		int i = start;
-		int j = mid + 1;
-		int k = start;
 		
-		while (i <= mid && j <= end) {
-			if (arr[i] < arr[j]) {
-				tmp[k] = arr[i];
+	//퀵 정렬
+	public static void quickSort(int[] arr, int start, int end) {
+		if (start >= end) {	//원소가 1개일 때
+			return;
+		}
+		
+		int key = start;
+		int i = start + 1;
+		int j = end;
+		int temp;
+		
+		while (i <= j) {
+			while (i <= end && arr[key] >= arr[i]) {	//key보다 큰 값 찾기
 				i++;
-			} else {
-				tmp[k] = arr[j];
-				j++;
 			}
-			k++;
-		}
-		//남은 데이터 삽입
-		if (i > mid) {
-			for (int f = j; f <= end; f++) {
-				tmp[k] = arr[f];
-				k++;
+			while (j > start && arr[key] <= arr[j]) { //key보다 작은 값 찾기
+				j--;
 			}
-		} else {
-			for (int f = i; f <= mid; f++) {
-				tmp[k] = arr[f];
-				k++;
+			
+			if (i > j) {	//엇갈렸으면 key와 j 교환
+				temp = arr[key];
+				arr[key] = arr[j];
+				arr[j] = temp;
+			} else {	//엇갈리지 않았으면 i와 j 교환
+				temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
 			}
 		}
 		
-		//배열 정렬
-		for (int f = start; f <= end; f++) {
-			arr[f] = tmp[f];
-		}
-	}
-	
-	//분할 후 병합
-	public static void mergeSort(int[] arr, int start, int end) {
-		if (start < end) {
-			int mid = (start + end) / 2;
-			
-			mergeSort(arr, start, mid);
-			mergeSort(arr, mid+1, end);
-			merge(arr, start, end, mid);	
-		}
+		quickSort(arr, start, j-1);		//j값을 기준으로 이전 인덱스 정렬
+		quickSort(arr, j+1, end);		//j값을 기준으로 이후 인덱스 정렬
 	}
 }
