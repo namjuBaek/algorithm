@@ -28,7 +28,6 @@ import java.io.OutputStreamWriter;
 public class N2751_1 {
 
 	static int[] sort;
-	static int[] tmp;
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -81,6 +80,10 @@ public class N2751_1 {
 				arr[i] = arr[j];
 				arr[j] = temp;
 			}
+			for (int num : arr) {
+				System.out.print(num + " ");
+			}
+			System.out.println();
 		}
 		
 		quickSort(arr, start, j-1);		//j값을 기준으로 이전 인덱스 정렬
