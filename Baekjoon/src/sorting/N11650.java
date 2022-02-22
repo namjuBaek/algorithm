@@ -18,7 +18,7 @@ package sorting;
  * - y좌표를 선택정렬하기 때문에 시간초과 -> 정렬방법 바꿔야 함 
  * 
  * - 먼저 x좌표를 정렬한 후 x값 별로 y좌표를 정렬하는 방식으로 풀었다.
- * - x좌표는 계수정렬로 정렬했고, x값 별 y좌표는 퀵 정렬을 사용하여 풀어 제출하니 통과되었다.
+ * - x좌표는 계수정렬로 정렬했고, x값 별 y좌표는 병합 정렬을 사용하여 풀어 제출하니 통과되었다.
  * - x와 y값을 한꺼번에 정렬할 수 있는 방법이 있을까? 좀 더 고민해봐야 할 것 같다.
  * - 또 계수정렬을 사용하니 확실히 메모리를 많이 잡아먹는다..
  * 
@@ -78,7 +78,7 @@ public class N11650 {
 			countArr[coord[i][0] - min]--;
 		}
 		
-		// y 좌표 퀵정렬
+		// y 좌표 병합정렬
 		int start = 0;
 		for (int i = 1; i < N; i++) {
 			if (sortCoord[i-1][0] != sortCoord[i][0]) {
@@ -88,7 +88,6 @@ public class N11650 {
 			}
 		}
 		
-
 		//sortCoordY(start, N); - 선택정렬
 		mergeSort(sortCoord, start, N-1);
 		
@@ -103,6 +102,7 @@ public class N11650 {
 	}
 
 	// Y좌표 정렬 메서드 - 선택정렬
+	/*
 	static public void sortCoordY(int start, int end) {
 		int temp = 0;
 		
@@ -116,6 +116,7 @@ public class N11650 {
 			}
 		}
 	}
+	*/
 	
 	//배열 정렬하며 병합
 	public static void merge(int[][] arr, int start, int end, int mid) {
