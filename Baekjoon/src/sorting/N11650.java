@@ -14,6 +14,14 @@ package sorting;
  * 
  * ----comment----
  * 02.21 - 음수가 있다는 점을 고려해야 함
+ * 02.22 
+ * - y좌표를 선택정렬하기 때문에 시간초과 -> 정렬방법 바꿔야 함 
+ * 
+ * - 먼저 x좌표를 정렬한 후 x값 별로 y좌표를 정렬하는 방식으로 풀었다.
+ * - x좌표는 계수정렬로 정렬했고, x값 별 y좌표는 퀵 정렬을 사용하여 풀어 제출하니 통과되었다.
+ * - x와 y값을 한꺼번에 정렬할 수 있는 방법이 있을까? 좀 더 고민해봐야 할 것 같다.
+ * - 또 계수정렬을 사용하니 확실히 메모리를 많이 잡아먹는다..
+ * 
  */
 
 import java.io.BufferedReader;
@@ -25,6 +33,7 @@ import java.io.OutputStreamWriter;
 public class N11650 {
 	
 	static int[][] sortCoord;
+	static int[] tmp;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -33,6 +42,7 @@ public class N11650 {
 		int N = Integer.parseInt(br.readLine());
 		int[][] coord = new int[N][2];
 		sortCoord = new int[N][2];
+		tmp = new int[N];
 		
 		int max = -100001;
 		int min = 100001;
@@ -51,34 +61,36 @@ public class N11650 {
 		
 		/* 계수 정렬 - x 좌표 정렬*/
 		//카운팅 배열 세팅
-		int[] countArr = new int[Math.abs(min) + Math.abs(max)];	//1부터 시작
+		int[] countArr = new int[max-min+1];
 		for (int i = 0; i < N; i++) {
-			countArr[coord[i][0] + (Math.abs(min)+1) - 1]++;
+			countArr[coord[i][0] - min]++;
 		}
 		
 		//직전 요소들의 값 합치기
-		for (int i = 1; i < max; i++) {
+		for (int i = 1; i < countArr.length; i++) {
 			countArr[i] += countArr[i-1];
 		}
 		
 		//계수 정렬 - 입력 배열의 역순으로 요소들을 채움
 		for (int i = N-1; i >= 0; i--) {
-			sortCoord[countArr[coord[i][0] - 1] - 1][0] = coord[i][0];
-			sortCoord[countArr[coord[i][0] - 1] - 1][1] = coord[i][1];		
-			countArr[coord[i][0] - 1]--;
+			sortCoord[countArr[coord[i][0] - min] - 1][0] = coord[i][0];
+			sortCoord[countArr[coord[i][0] - min] - 1][1] = coord[i][1];		
+			countArr[coord[i][0] - min]--;
 		}
 		
-		// y 좌표 정렬
-		
+		// y 좌표 퀵정렬
 		int start = 0;
 		for (int i = 1; i < N; i++) {
 			if (sortCoord[i-1][0] != sortCoord[i][0]) {
-				sortCoordY(start, i);
+				//sortCoordY(start, i); - 선택정렬
+				mergeSort(sortCoord, start, i-1);
 				start = i;
 			}
 		}
 		
-		sortCoordY(start, N);
+
+		//sortCoordY(start, N); - 선택정렬
+		mergeSort(sortCoord, start, N-1);
 		
 	
 		// 좌표 정렬 결과 출력
@@ -90,11 +102,11 @@ public class N11650 {
 		bw.close();   //스트림을 닫음
 	}
 
-	// Y좌표 정렬 메서드
+	// Y좌표 정렬 메서드 - 선택정렬
 	static public void sortCoordY(int start, int end) {
 		int temp = 0;
 		
-		for (int j = start; j < end; j++) {
+		for (int j = start; j < end-1; j++) {
 			for (int k = j+1; k < end; k++) {
 				if (sortCoord[j][1] > sortCoord[k][1]) {
 					temp = sortCoord[j][1];
@@ -102,6 +114,52 @@ public class N11650 {
 					sortCoord[k][1] = temp; 
 				}
 			}
+		}
+	}
+	
+	//배열 정렬하며 병합
+	public static void merge(int[][] arr, int start, int end, int mid) {
+		int i = start;
+		int j = mid + 1;
+		int k = start;
+		
+		while (i <= mid && j <= end) {
+			if (arr[i][1] < arr[j][1]) {
+				tmp[k] = arr[i][1];
+				i++;
+			} else {
+				tmp[k] = arr[j][1];
+				j++;
+			}
+			k++;
+		}
+		//남은 데이터 삽입
+		if (i > mid) {
+			for (int f = j; f <= end; f++) {
+				tmp[k] = arr[f][1];
+				k++;
+			}
+		} else {
+			for (int f = i; f <= mid; f++) {
+				tmp[k] = arr[f][1];
+				k++;
+			}
+		}
+		
+		//배열 정렬
+		for (int f = start; f <= end; f++) {
+			arr[f][1] = tmp[f];
+		}
+	}
+	
+	//분할 후 병합
+	public static void mergeSort(int[][] arr, int start, int end) {
+		if (start < end) {
+			int mid = (start + end) / 2;
+			
+			mergeSort(arr, start, mid);
+			mergeSort(arr, mid+1, end);
+			merge(arr, start, end, mid);	
 		}
 	}
 }
