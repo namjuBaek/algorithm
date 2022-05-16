@@ -17,10 +17,21 @@ public class N10872 {
 		Scanner scan = new Scanner(System.in);
 		int num = scan.nextInt();
 		
-		System.out.println(factorial(num));
+		Factorial fact = new Factorial(num);
+		System.out.println(fact.factorial(num));
 	}
 	
-	static int factorial(int num) {
+	
+}
+
+class Factorial {
+	private int num;
+	
+	Factorial (int num) {
+		this.num = num;
+	}
+	
+	int factorial(int num) {
 		if (num == 0) {
 			return 1;
 		}
